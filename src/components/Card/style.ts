@@ -22,7 +22,6 @@ export const Container = styled.div`
 
     h4 {
         margin-top: 0.5rem;
-        text-align: left;
         color: var(--green);
 
         &.alert {

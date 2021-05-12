@@ -1,9 +1,6 @@
 import { Container, Title } from './style'
 
-import { useEffect, useState } from 'react'
-import { api } from '../../services/api'
-
-import { Card } from '../Card/index'
+import { Card } from '../Card'
 
 interface Asset {
     id: number;
@@ -27,15 +24,11 @@ interface Asset {
     companyId: number;
 }
 
-export function Assets() {
+interface AssetsProps {
+    assets: Asset[];
+}
 
-    const [assets, setAssets] = useState<Asset[]>([])
-
-    useEffect(() => {
-        api.get('assets')
-            .then(response => setAssets(response.data))
-    }, [])
-
+export function Assets({ assets }: AssetsProps) {
     return (
         <>
             <Title>Ativos</Title>
@@ -44,6 +37,7 @@ export function Assets() {
                     return (
                         <Card 
                             key={asset.id}
+                            id={asset.id}
                             name={asset.name}
                             image={asset.image}
                             healthscore={asset.healthscore}
