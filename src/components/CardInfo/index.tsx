@@ -1,8 +1,9 @@
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import { format, parseISO } from 'date-fns'
 import ptBR from 'date-fns/locale/pt-BR'
+import backImg from '../../assets/back.svg'
 
-import { Container } from './style'
+import { Container, BackImg } from './style'
 
 interface Asset {
     id: number;
@@ -55,6 +56,10 @@ export function CardInfo({ assets }: CardInfoProps) {
     })
 
     return (
+        <>
+        <Link to="/">
+            <BackImg src={backImg} alt="Voltar" />
+        </Link>
         <Container>
             <section className="info-section">
                 <h2>{name}</h2>
@@ -99,5 +104,6 @@ export function CardInfo({ assets }: CardInfoProps) {
                 gráfico
             </section>
         </Container>
+        </>
     )
 }

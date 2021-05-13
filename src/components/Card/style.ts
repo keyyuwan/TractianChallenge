@@ -3,7 +3,7 @@ import styled from 'styled-components'
 export const Container = styled.div`
     background: white;
     padding: 2rem 1rem;
-    border: 2px solid var(--blue-dark);
+    border: 2px solid white;
     border-radius: 1rem;
     cursor: pointer;
     opacity: 0.85;
@@ -13,11 +13,12 @@ export const Container = styled.div`
     align-items: center;
     justify-content: center;
 
-    transition: transform 0.2s;
+    transition: 0.2s;
 
     &:hover {
         transform: translateY(-5%);
         opacity: 1;
+        border-color: var(--blue-dark);
     }
 
     h4 {
