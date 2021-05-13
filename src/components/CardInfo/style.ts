@@ -47,6 +47,15 @@ export const Container = styled.div`
       font-size: 3rem;
     }
 
+    span {
+      display: inline-block;
+      margin-top: 0.5rem;
+
+      &.division {
+        margin: 0 0.3rem;
+      }
+    }
+
     h4 {
       color: var(--green);
 

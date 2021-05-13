@@ -2,8 +2,10 @@ import { useParams, Link } from 'react-router-dom'
 import { format, parseISO } from 'date-fns'
 import ptBR from 'date-fns/locale/pt-BR'
 import backImg from '../../assets/back.svg'
+import { api } from '../../services/api'
 
 import { Container, BackImg } from './style'
+import { useEffect, useState } from 'react'
 
 interface Asset {
     id: number;
@@ -35,6 +37,17 @@ interface ParamsProps {
     id: string;
 }
 
+interface Unit {
+    id: number;
+    name: string;
+    companyId: number;
+}
+
+interface Company {
+    id: number;
+    name: string;
+}
+
 export function CardInfo({ assets }: CardInfoProps) {
 
     function useAsset() {
@@ -48,8 +61,32 @@ export function CardInfo({ assets }: CardInfoProps) {
         healthscore, 
         specifications, 
         metrics, 
-        image
+        image,
+        unitId,
+        companyId
     } = useAsset();
+
+    const [units, setUnits] = useState<Unit[]>([])
+    
+    const [companies, setCompanies] = useState<Company[]>([])
+
+    useEffect(() => {
+        api.get('units')
+            .then(response => setUnits(response.data))
+
+        api.get('companies')
+            .then(response => setCompanies(response.data))
+    }, [])
+
+    function getUnit() {
+        let assetUnit = units.find(unit => unit.id === unitId)
+        return assetUnit?.name
+    }
+
+    function getCompany() {
+        let assetCompany = companies.find(company => unitId === company.id)
+        return assetCompany?.name
+    }
 
     const formatedDate = format(parseISO(metrics.lastUptimeAt), `PP, p`, {
         locale: ptBR
@@ -63,6 +100,9 @@ export function CardInfo({ assets }: CardInfoProps) {
         <Container>
             <section className="info-section">
                 <h2>{name}</h2>
+                <span>{getUnit()}</span>
+                <span className="division"> | </span>
+                <span>{getCompany()}</span>
                 <h4 
                     className={ status === 'inAlert' ? 'alert' : 'status'}
                 >Status: {status}</h4>
