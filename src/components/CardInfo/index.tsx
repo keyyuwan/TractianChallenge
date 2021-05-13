@@ -1,4 +1,6 @@
 import { useParams } from 'react-router-dom'
+import { format, parseISO } from 'date-fns'
+import ptBR from 'date-fns/locale/pt-BR'
 
 import { Container } from './style'
 
@@ -39,44 +41,59 @@ export function CardInfo({ assets }: CardInfoProps) {
         return assets.filter(asset => Number(id) === asset.id)[0]
     }  
 
-    const asset = useAsset()
+    const { 
+        name, 
+        status, 
+        healthscore, 
+        specifications, 
+        metrics, 
+        image
+    } = useAsset();
+
+    const formatedDate = format(parseISO(metrics.lastUptimeAt), `PP, p`, {
+        locale: ptBR
+    })
 
     return (
         <Container>
             <section className="info-section">
-                <h2>{asset.name}</h2>
+                <h2>{name}</h2>
                 <h4 
-                    className={ asset.status === 'inAlert' ? 'alert' : 'status'}
-                >Status: {asset.status}</h4>
-                <h4 className="health">Saúde: {asset.healthscore}%</h4>
+                    className={ status === 'inAlert' ? 'alert' : 'status'}
+                >Status: {status}</h4>
+                <h4 className="health">Saúde: {healthscore}%</h4>
                 <div className="specifications">
                     <h4>Especificações:</h4>
-                    <p>Temperatura máxima: <strong>{asset.specifications.maxTemp}°C</strong></p>
-                    { asset.specifications.power && (
-                        <p>Potência: <strong>{asset.specifications.power}kWh</strong></p>
-                    ) }
-                    { asset.specifications.rpm && (
-                        <p>RPM: <strong>{asset.specifications?.rpm}rpm</strong></p>
-                    ) }
+                    <p>Temperatura máxima: <strong>{specifications.maxTemp}°C</strong></p>
+                    { specifications.power ? (
+                        <p>Potência: <strong>{specifications.power}kWh</strong></p>
+                    ) : (
+                        <p>Potência: <strong>0kWh</strong></p>
+                    )}
+                    { specifications.rpm ? (
+                        <p>RPM: <strong>{specifications?.rpm}rpm</strong></p>
+                    ) : (   
+                        <p>RPM: <strong>0rpm</strong></p>
+                    )}
                 </div>
                 <div className="metrics">
                     <h4>Métricas:</h4>
                     <p>
                         Total de coletas uptime(ligada): 
-                        <strong>{asset.metrics.totalCollectsUptime}</strong>
+                        <strong>{metrics.totalCollectsUptime}</strong>
                     </p>
                     <p>
                         Total de horas de coletas uptime(ligada): 
-                        <strong>{Math.floor(asset.metrics.totalUptime)}h</strong>
+                        <strong>{Math.floor(metrics.totalUptime)}h</strong>
                     </p>
                     <p>
                         Data da última coleta uptime(ligada):
-                        <strong>{asset.metrics.lastUptimeAt}</strong>
+                        <strong className="date">{formatedDate}</strong>
                     </p>
                 </div>
             </section>
             <section className="image-section">
-                <img src={asset.image} alt="Ativo" />
+                <img src={image} alt="Ativo" />
             </section>
             <section className="graphic-section">
                 gráfico

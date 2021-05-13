@@ -51,6 +51,10 @@ export const Container = styled.div`
       strong {
           margin-left: 0.5rem;
           white-space: nowrap;
+
+          &.date {
+            text-transform: capitalize;
+          }
       }
   }
 
