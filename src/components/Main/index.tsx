@@ -1,4 +1,7 @@
 import { Assets } from '../Assets'
+import { Users } from '../Users'
+import { UnitsCompaniesContextProvider } from '../../contexts/UnitsCompaniesContext'
+
 import { Container } from './style'
 
 interface Asset {
@@ -29,8 +32,11 @@ interface MainProps {
 
 export function Main({ assets }: MainProps) {
     return (
-        <Container>
-            <Assets assets={assets} />
-        </Container>
+        <UnitsCompaniesContextProvider>
+            <Container>
+                <Assets assets={assets} />
+                <Users />
+            </Container>
+        </UnitsCompaniesContextProvider>
     )
 }

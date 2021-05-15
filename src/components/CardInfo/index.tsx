@@ -3,6 +3,7 @@ import { format, parseISO } from 'date-fns'
 import ptBR from 'date-fns/locale/pt-BR'
 import backImg from '../../assets/back.svg'
 import { api } from '../../services/api'
+import { useUnitsCompanies } from '../../contexts/UnitsCompaniesContext'
 
 import { Container, BackImg } from './style'
 import { useEffect, useState } from 'react'
@@ -37,17 +38,6 @@ interface ParamsProps {
     id: string;
 }
 
-interface Unit {
-    id: number;
-    name: string;
-    companyId: number;
-}
-
-interface Company {
-    id: number;
-    name: string;
-}
-
 export function CardInfo({ assets }: CardInfoProps) {
 
     function useAsset() {
@@ -66,17 +56,7 @@ export function CardInfo({ assets }: CardInfoProps) {
         companyId
     } = useAsset();
 
-    const [units, setUnits] = useState<Unit[]>([])
-    
-    const [companies, setCompanies] = useState<Company[]>([])
-
-    useEffect(() => {
-        api.get('units')
-            .then(response => setUnits(response.data))
-
-        api.get('companies')
-            .then(response => setCompanies(response.data))
-    }, [])
+    const { units, companies } = useUnitsCompanies()
 
     function getUnit() {
         let assetUnit = units.find(unit => unit.id === unitId)
@@ -101,7 +81,7 @@ export function CardInfo({ assets }: CardInfoProps) {
             <section className="info-section">
                 <h2>{name}</h2>
                 <span>{getUnit()}</span>
-                <span className="division"> | </span>
+                <span className="division">|</span>
                 <span>{getCompany()}</span>
                 <h4 
                     className={ status === 'inAlert' ? 'alert' : 'status'}
